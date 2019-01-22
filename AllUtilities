@@ -40,4 +40,14 @@ public static class Utilities
 
       return table;
   }
+  
+  public static DataTable SetColumnNamesFromHeaderRow(this DataTable dt)
+  {
+      foreach (DataColumn c in dt.Columns)
+      {
+          c.ColumnName = dt.Rows[0][c.Ordinal].ToString();
+      }
+      dt.Rows.RemoveAt(0);
+      return dt;
+  }
 }
