@@ -1,0 +1,43 @@
+public static class Utilities
+{
+  public static DataSet SetTableNames(this DataSet ds)
+  {
+      if (ds.Tables[0].Columns[0].ToString().ToLower() == "tablename")
+      {
+          foreach (DataTable dt in ds.Tables)
+          {
+              dt.TableName = ds.Tables[0].Columns[ds.Tables.IndexOf(dt)].ToString();
+          }
+      }
+      else
+      {
+          foreach (DataTable dt in ds.Tables)
+          {
+              dt.TableName = ds.Tables[0].Rows[ds.Tables.IndexOf(dt)]["TableName"].ToString();
+          }
+      }
+      return ds;
+  }
+
+  public static string BuildEmailTableHTML(this DataTable dt)
+  {
+      string table = "<table style='border: 1px solid black; border-collapse:collapse;'><thead><tr>";
+      foreach (DataColumn c in dt.Columns)
+      {
+          table += string.Format("<th style='border: 1px solid black;'>{0}</th>", c.ColumnName);
+      }
+      table += "</tr></thead><tbody>";
+      foreach (DataRow r in dt.Rows)
+      {
+          table += string.Format("<tr>");
+          foreach (var x in r.ItemArray)
+          {
+              table += string.Format("<td style='border: 1px solid black;'>{0}</td>", x);
+          }
+          table += string.Format("</tr>");
+      }
+      table += "</tbody></table>";
+
+      return table;
+  }
+}
